@@ -1,0 +1,2143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Quiz No. 3 - Web Systems and Technology</title>
+  <style>
+    :root {
+      --bg-body: #090d16;
+      --bg-header: rgba(11, 16, 29, 0.94);
+      --bg-card: rgba(15, 23, 42, 0.94);
+      --bg-input: #020617;
+      --border-subtle: #1e293b;
+      --border-light: #334155;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --text-dim: #64748b;
+      --indigo: #6366f1;
+      --indigo-dark: #4f46e5;
+      --indigo-light: #a5b4fc;
+      --purple: #9333ea;
+      --pink: #ec4899;
+      --pink-light: #f472b6;
+      --amber: #f59e0b;
+      --amber-light: #fcd34d;
+      --emerald: #10b981;
+      --emerald-light: #34d399;
+      --rose: #f43f5e;
+      --rose-light: #fb7185;
+      --cyan: #06b6d4;
+      --cyan-light: #67e8f9;
+      --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: var(--font-sans);
+      background-color: var(--bg-body);
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    ::selection {
+      background-color: var(--indigo);
+      color: #ffffff;
+    }
+
+    code, pre, textarea.code-editor {
+      font-family: var(--font-mono);
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    @keyframes popIn {
+      0% {
+        opacity: 0;
+        transform: scale(0.97) translateY(6px);
+      }
+      100% {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+      }
+    }
+
+    .animate-pop {
+      animation: popIn 0.22s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    /* ================= HEADER ================= */
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 30;
+      border-bottom: 1px solid rgba(30, 41, 59, 0.85);
+      background-color: var(--bg-header);
+      backdrop-filter: blur(10px);
+    }
+
+    .header-inner {
+      max-width: 1152px;
+      margin: 0 auto;
+      padding: 16px 24px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .brand-logo {
+      width: 44px;
+      height: 44px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, var(--indigo), var(--purple));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 900;
+      color: #ffffff;
+      box-shadow: 0 10px 20px rgba(99, 102, 241, 0.25);
+      font-size: 17px;
+      letter-spacing: -0.5px;
+    }
+
+    .brand-subtitle {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--indigo-light);
+      display: block;
+    }
+
+    .brand-title {
+      font-size: 20px;
+      font-weight: 800;
+      color: #ffffff;
+      line-height: 1.2;
+    }
+
+    .hud-container {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .hud-student {
+      padding: 6px 14px;
+      border-radius: 12px;
+      background-color: #0f172a;
+      border: 1px solid var(--border-subtle);
+      text-align: right;
+    }
+
+    .hud-name {
+      font-size: 14px;
+      font-weight: 700;
+      color: #f1f5f9;
+      line-height: 1.25;
+    }
+
+    .hud-section {
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--text-muted);
+    }
+
+    .hud-progress-box {
+      padding: 6px 16px;
+      border-radius: 12px;
+      background-color: rgba(30, 27, 75, 0.65);
+      border: 1px solid rgba(99, 102, 241, 0.35);
+    }
+
+    .hud-progress-label {
+      display: block;
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--indigo-light);
+    }
+
+    .hud-progress-val {
+      font-size: 17px;
+      font-weight: 900;
+      color: #ffffff;
+    }
+
+    /* ================= MAIN CONTAINER ================= */
+    .main-wrapper {
+      flex: 1;
+      width: 100%;
+      max-width: 1152px;
+      margin: 0 auto;
+      padding: 32px 24px;
+    }
+
+    .card {
+      border-radius: 24px;
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      padding: 32px;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.45);
+    }
+
+    /* ================= START SCREEN ================= */
+    .start-wrapper {
+      max-width: 768px;
+      margin: 0 auto;
+    }
+
+    .pill-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 5px 12px;
+      border-radius: 999px;
+      background-color: rgba(99, 102, 241, 0.12);
+      border: 1px solid rgba(99, 102, 241, 0.3);
+      color: var(--indigo-light);
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-bottom: 16px;
+    }
+
+    .page-heading {
+      font-size: 32px;
+      font-weight: 900;
+      color: #ffffff;
+      letter-spacing: -0.02em;
+      margin-bottom: 8px;
+      line-height: 1.15;
+    }
+
+    .page-desc {
+      color: var(--text-muted);
+      font-size: 15px;
+      margin-bottom: 28px;
+    }
+
+    .page-desc strong {
+      color: #e2e8f0;
+    }
+
+    .page-desc strong.pink-highlight {
+      color: var(--pink-light);
+    }
+
+    .form-group-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .form-label {
+      display: block;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: #cbd5e1;
+      margin-bottom: 8px;
+    }
+
+    .req-star {
+      color: var(--rose-light);
+    }
+
+    .text-input {
+      width: 100%;
+      padding: 14px 16px;
+      border-radius: 14px;
+      background-color: var(--bg-input);
+      border: 1px solid var(--border-subtle);
+      color: #ffffff;
+      font-size: 15px;
+      font-family: inherit;
+      transition: border-color 0.18s ease, box-shadow 0.18s ease;
+    }
+
+    .text-input::placeholder {
+      color: var(--text-dim);
+    }
+
+    .text-input:focus {
+      outline: none;
+      border-color: var(--indigo);
+      box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.22);
+    }
+
+    /* Category Selector */
+    .cat-header {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+
+    .link-btn {
+      background: none;
+      border: none;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--indigo-light);
+      text-decoration: underline;
+      text-underline-offset: 4px;
+      cursor: pointer;
+    }
+
+    .link-btn:hover {
+      color: #c7d2fe;
+    }
+
+    .cat-picker-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+    }
+
+    .cat-card-btn {
+      text-align: left;
+      padding: 16px;
+      border-radius: 16px;
+      border: 1px solid var(--border-subtle);
+      background-color: rgba(2, 6, 23, 0.75);
+      color: var(--text-main);
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      opacity: 0.78;
+      transition: all 0.18s ease;
+      font-family: inherit;
+    }
+
+    .cat-card-btn:hover {
+      border-color: var(--border-light);
+      opacity: 1;
+    }
+
+    .cat-card-btn.selected {
+      background-color: rgba(30, 27, 75, 0.55);
+      border-color: var(--indigo);
+      box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.3);
+      opacity: 1;
+    }
+
+    .cat-card-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+
+    .cat-icon {
+      font-size: 24px;
+    }
+
+    .diff-badge {
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      padding: 3px 8px;
+      border-radius: 999px;
+      border: 1px solid transparent;
+    }
+
+    .badge-purple {
+      background-color: rgba(168, 85, 247, 0.15);
+      color: #d8b4fe;
+      border-color: rgba(168, 85, 247, 0.3);
+    }
+
+    .badge-gold {
+      background-color: rgba(245, 158, 11, 0.15);
+      color: #fcd34d;
+      border-color: rgba(245, 158, 11, 0.3);
+    }
+
+    .badge-pink {
+      background-color: rgba(236, 72, 153, 0.15);
+      color: #f9a8d4;
+      border-color: rgba(236, 72, 153, 0.3);
+    }
+
+    .badge-cyan {
+      background-color: rgba(6, 182, 212, 0.15);
+      color: #67e8f9;
+      border-color: rgba(6, 182, 212, 0.3);
+    }
+
+    .cat-card-title-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-weight: 800;
+      font-size: 14px;
+      color: #ffffff;
+    }
+
+    .check-circle {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      background-color: var(--border-subtle);
+      color: var(--text-dim);
+    }
+
+    .cat-card-btn.selected .check-circle {
+      background-color: var(--indigo);
+      color: #ffffff;
+    }
+
+    .cat-card-desc {
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-top: 5px;
+    }
+
+    .error-msg {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--rose-light);
+      margin-top: 8px;
+    }
+
+    .boss-notice {
+      margin-top: 22px;
+      margin-bottom: 24px;
+      padding: 16px;
+      border-radius: 16px;
+      background-color: rgba(80, 7, 36, 0.25);
+      border: 1px solid rgba(236, 72, 153, 0.32);
+      font-size: 12px;
+      color: #cbd5e1;
+    }
+
+    .boss-notice-title {
+      font-weight: 700;
+      color: #f9a8d4;
+      margin-bottom: 4px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .primary-btn {
+      width: 100%;
+      padding: 16px 24px;
+      border: none;
+      border-radius: 16px;
+      background: linear-gradient(90deg, var(--indigo-dark), var(--purple));
+      color: #ffffff;
+      font-family: inherit;
+      font-size: 16px;
+      font-weight: 800;
+      cursor: pointer;
+      box-shadow: 0 12px 24px rgba(79, 70, 229, 0.28);
+      transition: transform 0.16s ease, filter 0.16s ease;
+    }
+
+    .primary-btn:hover {
+      filter: brightness(1.1);
+      transform: translateY(-2px);
+    }
+
+    .boss-submit-btn {
+      background: linear-gradient(90deg, #db2777, var(--purple));
+      box-shadow: 0 12px 24px rgba(219, 39, 119, 0.28);
+    }
+
+    /* ================= STAGE 1: GAME BOARD ================= */
+    .board-banner {
+      border-radius: 22px;
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      padding: 22px 26px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .stage-tag {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--indigo-light);
+    }
+
+    .board-title {
+      font-size: 24px;
+      font-weight: 900;
+      color: #ffffff;
+      margin-top: 2px;
+    }
+
+    .board-sub {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+
+    .board-sub strong {
+      color: var(--indigo-light);
+    }
+
+    .lock-rule-note {
+      display: inline-block;
+      margin-top: 6px;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--amber-light);
+    }
+
+    .remaining-box {
+      padding: 10px 18px;
+      border-radius: 16px;
+      background-color: var(--bg-input);
+      border: 1px solid var(--border-subtle);
+      text-align: center;
+    }
+
+    .remaining-label {
+      display: block;
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--text-muted);
+    }
+
+    .remaining-val {
+      font-size: 18px;
+      font-weight: 900;
+      color: var(--amber);
+    }
+
+    .board-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+
+    .cat-column {
+      border-radius: 24px;
+      background-color: rgba(15, 23, 42, 0.96);
+      border: 1px solid var(--border-subtle);
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      box-shadow: 0 14px 30px rgba(0, 0, 0, 0.35);
+    }
+
+    .border-purple { border-color: rgba(168, 85, 247, 0.4); }
+    .border-gold { border-color: rgba(245, 158, 11, 0.4); }
+    .border-pink { border-color: rgba(236, 72, 153, 0.4); }
+    .border-cyan { border-color: rgba(6, 182, 212, 0.4); }
+
+    .col-header {
+      margin-bottom: 18px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .col-header-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 8px;
+    }
+
+    .col-icon {
+      font-size: 28px;
+    }
+
+    .col-title {
+      font-size: 20px;
+      font-weight: 900;
+      color: #ffffff;
+    }
+
+    .col-desc {
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+
+    .tiles-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .tile-btn {
+      width: 100%;
+      padding: 14px 16px;
+      border-radius: 16px;
+      border: 1px solid transparent;
+      font-family: inherit;
+      font-weight: 900;
+      font-size: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      color: #ffffff;
+      cursor: pointer;
+      box-shadow: 0 8px 18px rgba(0, 0, 0, 0.28);
+      transition: transform 0.18s cubic-bezier(0.22, 1, 0.36, 1), filter 0.18s ease, opacity 0.18s ease;
+    }
+
+    .tile-btn:not(:disabled):hover {
+      transform: translateY(-2px) scale(1.01);
+      filter: brightness(1.08);
+    }
+
+    .tile-btn:disabled {
+      background: rgba(2, 6, 23, 0.75) !important;
+      border-color: rgba(30, 41, 59, 0.85) !important;
+      color: #475569 !important;
+      cursor: not-allowed;
+      box-shadow: none;
+    }
+
+    .tile-purple {
+      background: linear-gradient(135deg, #9333ea, #4338ca);
+      border-color: rgba(192, 132, 252, 0.4);
+    }
+
+    .tile-gold {
+      background: linear-gradient(135deg, #f59e0b, #ea580c);
+      border-color: rgba(252, 211, 77, 0.4);
+    }
+
+    .tile-pink {
+      background: linear-gradient(135deg, #db2777, #be123c);
+      border-color: rgba(244, 114, 182, 0.4);
+    }
+
+    .tile-cyan {
+      background: linear-gradient(135deg, #0891b2, #1d4ed8);
+      border-color: rgba(103, 232, 249, 0.4);
+    }
+
+    .tile-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .tile-num {
+      width: 32px;
+      height: 32px;
+      border-radius: 10px;
+      background-color: rgba(0, 0, 0, 0.24);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      font-weight: 800;
+    }
+
+    .tile-btn:disabled .tile-num {
+      background-color: #0f172a;
+      color: #475569;
+    }
+
+    .tile-label {
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .tile-status {
+      font-size: 11px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      padding: 4px 10px;
+      border-radius: 8px;
+      background-color: rgba(0, 0, 0, 0.22);
+    }
+
+    .tile-btn:disabled .tile-status {
+      background-color: #0f172a;
+      color: rgba(52, 211, 153, 0.8);
+    }
+
+    /* ================= STAGE 2: CODE HYDRA ================= */
+    .hydra-wrapper {
+      max-width: 896px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .hydra-hero {
+      border-radius: 24px;
+      background: linear-gradient(90deg, rgba(80, 7, 36, 0.65), #0f172a, rgba(59, 7, 100, 0.65));
+      border: 1px solid rgba(236, 72, 153, 0.42);
+      padding: 28px 32px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.45);
+    }
+
+    .hydra-hero-left {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .hydra-dragon {
+      font-size: 38px;
+    }
+
+    .hydra-tag {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--pink-light);
+    }
+
+    .hydra-title {
+      font-size: 28px;
+      font-weight: 900;
+      color: #ffffff;
+    }
+
+    .hydra-sub {
+      font-size: 13px;
+      color: #cbd5e1;
+      margin-top: 3px;
+    }
+
+    .max-score-box {
+      background-color: rgba(2, 6, 23, 0.9);
+      border: 1px solid var(--border-subtle);
+      padding: 12px 20px;
+      border-radius: 16px;
+      text-align: center;
+    }
+
+    .max-score-label {
+      display: block;
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+
+    .max-score-val {
+      font-size: 20px;
+      font-weight: 900;
+      color: var(--pink-light);
+    }
+
+    .hydra-body {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .scenario-title {
+      font-size: 20px;
+      font-weight: 800;
+      color: #ffffff;
+      margin-top: 4px;
+    }
+
+    .inline-code {
+      color: var(--amber-light);
+      font-weight: 600;
+    }
+
+    .rules-list {
+      margin-top: 10px;
+      padding-left: 20px;
+      font-size: 14px;
+      color: #cbd5e1;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .code-box {
+      padding: 16px;
+      border-radius: 16px;
+      background-color: var(--bg-input);
+      border: 1px solid var(--border-subtle);
+      font-size: 13px;
+    }
+
+    .code-box-title {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+    }
+
+    .code-box pre {
+      color: var(--amber-light);
+      overflow-x: auto;
+      white-space: pre;
+    }
+
+    .code-editor {
+      width: 100%;
+      padding: 16px;
+      border-radius: 16px;
+      background-color: var(--bg-input);
+      border: 1px solid var(--border-subtle);
+      color: var(--amber-light);
+      font-size: 14px;
+      line-height: 1.5;
+      resize: vertical;
+    }
+
+    .code-editor:focus {
+      outline: none;
+      border-color: var(--pink);
+      box-shadow: 0 0 0 3px rgba(236, 72, 153, 0.2);
+    }
+
+    /* ================= RESULTS SCREEN ================= */
+    .result-wrapper {
+      max-width: 896px;
+      margin: 0 auto;
+    }
+
+    .result-header {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding-bottom: 24px;
+      border-bottom: 1px solid var(--border-subtle);
+      margin-bottom: 24px;
+    }
+
+    .student-meta {
+      margin-top: 8px;
+      font-size: 14px;
+      color: #cbd5e1;
+    }
+
+    .student-meta span {
+      color: var(--text-muted);
+    }
+
+    .score-cards-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      text-align: center;
+    }
+
+    .score-mini-card {
+      padding: 12px 14px;
+      border-radius: 16px;
+      background-color: var(--bg-input);
+      border: 1px solid var(--border-subtle);
+    }
+
+    .score-mini-card.mc { border-color: rgba(99, 102, 241, 0.35); }
+    .score-mini-card.hydra { border-color: rgba(236, 72, 153, 0.35); }
+    .score-mini-card.total { border-color: rgba(16, 185, 129, 0.5); }
+
+    .score-mini-label {
+      display: block;
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+
+    .score-mini-val {
+      font-size: 19px;
+      font-weight: 900;
+    }
+
+    .text-indigo { color: var(--indigo-light); }
+    .text-pink { color: var(--pink-light); }
+    .text-emerald { color: var(--emerald-light); }
+    .text-rose { color: var(--rose-light); }
+    .text-amber { color: var(--amber-light); }
+    .text-cyan { color: var(--cyan-light); }
+
+    .section-heading {
+      font-size: 16px;
+      font-weight: 800;
+      margin-bottom: 12px;
+    }
+
+    .review-card {
+      padding: 18px;
+      border-radius: 16px;
+      background-color: rgba(2, 6, 23, 0.92);
+      border: 1px solid var(--border-subtle);
+      margin-bottom: 12px;
+    }
+
+    .review-card.correct { border-color: rgba(16, 185, 129, 0.35); }
+    .review-card.incorrect { border-color: rgba(244, 63, 94, 0.35); }
+
+    .review-top {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+
+    .status-pill {
+      padding: 3px 10px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .status-pill.pass {
+      background-color: rgba(16, 185, 129, 0.15);
+      color: var(--emerald-light);
+    }
+
+    .status-pill.fail {
+      background-color: rgba(244, 63, 94, 0.15);
+      color: var(--rose-light);
+    }
+
+    .status-pill.warn {
+      background-color: rgba(245, 158, 11, 0.15);
+      color: var(--amber-light);
+    }
+
+    .review-answers-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .ans-box {
+      padding: 10px 12px;
+      border-radius: 12px;
+      background-color: #0f172a;
+      border: 1px solid var(--border-subtle);
+      font-size: 12px;
+    }
+
+    .ans-box-label {
+      display: block;
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 2px;
+    }
+
+    .print-row {
+      display: flex;
+      justify-content: flex-end;
+      margin-top: 20px;
+    }
+
+    .print-btn {
+      padding: 12px 20px;
+      border-radius: 14px;
+      background-color: #1e293b;
+      border: 1px solid var(--border-light);
+      color: #ffffff;
+      font-family: inherit;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .print-btn:hover {
+      background-color: #334155;
+    }
+
+    /* ================= LOCKED QUESTION MODAL ================= */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      z-index: 50;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      background-color: rgba(0, 0, 0, 0.85);
+      backdrop-filter: blur(6px);
+    }
+
+    .modal-dialog {
+      width: 100%;
+      max-width: 672px;
+      max-height: 92vh;
+      border-radius: 24px;
+      background-color: #0f172a;
+      border: 1px solid rgba(71, 85, 105, 0.85);
+      box-shadow: 0 25px 50px rgba(0, 0, 0, 0.75);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .modal-header {
+      padding: 16px 24px;
+      background-color: var(--bg-input);
+      border-bottom: 1px solid var(--border-subtle);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .modal-cat-info {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .modal-timer-box {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 14px;
+      border-radius: 12px;
+      background-color: #0f172a;
+      border: 1px solid var(--border-subtle);
+    }
+
+    .modal-timer-val {
+      font-size: 15px;
+      font-weight: 900;
+      font-variant-numeric: tabular-nums;
+      color: var(--indigo-light);
+    }
+
+    .modal-timer-val.urgent {
+      color: var(--rose-light);
+    }
+
+    .modal-body {
+      padding: 24px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    .lock-banner {
+      padding: 10px 14px;
+      border-radius: 12px;
+      background-color: rgba(245, 158, 11, 0.12);
+      border: 1px solid rgba(245, 158, 11, 0.35);
+      color: var(--amber-light);
+      font-size: 12px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .modal-question {
+      font-size: 19px;
+      font-weight: 800;
+      color: #ffffff;
+      line-height: 1.4;
+    }
+
+    .modal-code-box {
+      border-radius: 16px;
+      background-color: #050811;
+      border: 1px solid var(--border-subtle);
+      padding: 16px;
+      overflow-x: auto;
+    }
+
+    .modal-code-box pre {
+      font-size: 13px;
+      color: var(--emerald-light);
+      white-space: pre;
+    }
+
+    .choices-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .choice-btn {
+      width: 100%;
+      text-align: left;
+      padding: 15px 16px;
+      border-radius: 16px;
+      background-color: var(--bg-input);
+      border: 1px solid var(--border-subtle);
+      color: #e2e8f0;
+      font-family: inherit;
+      font-size: 15px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      cursor: pointer;
+      transition: background-color 0.15s ease, border-color 0.15s ease;
+    }
+
+    .choice-btn:hover {
+      background-color: rgba(30, 27, 75, 0.65);
+      border-color: var(--indigo);
+      color: #ffffff;
+    }
+
+    .choice-letter {
+      width: 36px;
+      height: 36px;
+      flex-shrink: 0;
+      border-radius: 10px;
+      background-color: #0f172a;
+      color: var(--indigo-light);
+      font-weight: 900;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background-color 0.15s ease, color 0.15s ease;
+    }
+
+    .choice-btn:hover .choice-letter {
+      background-color: var(--indigo-dark);
+      color: #ffffff;
+    }
+
+    .modal-footer {
+      padding: 14px 24px;
+      background-color: rgba(2, 6, 23, 0.92);
+      border-top: 1px solid var(--border-subtle);
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .site-footer {
+      border-top: 1px solid rgba(30, 41, 59, 0.6);
+      padding: 16px 24px;
+      text-align: center;
+      font-size: 12px;
+      color: var(--text-dim);
+    }
+
+    /* ================= RESPONSIVE ================= */
+    @media (max-width: 900px) {
+      .board-grid {
+        grid-template-columns: 1fr;
+      }
+      .cat-picker-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 640px) {
+      .form-group-row,
+      .cat-picker-grid,
+      .review-answers-grid {
+        grid-template-columns: 1fr;
+      }
+      .card {
+        padding: 22px;
+      }
+      .page-heading {
+        font-size: 24px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- TOP HEADER BAR -->
+  <header class="site-header">
+    <div class="header-inner">
+      <div class="brand">
+        <div class="brand-logo">&lt;/&gt;</div>
+        <div>
+          <span class="brand-subtitle">Web Systems and Technology</span>
+          <h1 class="brand-title">Quiz No. 3</h1>
+        </div>
+      </div>
+
+      <!-- LIVE STUDENT & PROGRESS HUD (Stage 1) -->
+      <div id="hudContainer" class="hud-container hidden">
+        <div class="hud-student">
+          <div id="hudName" class="hud-name">Student Name</div>
+          <div id="hudSection" class="hud-section">Year &amp; Section</div>
+        </div>
+        <div class="hud-progress-box">
+          <span class="hud-progress-label">MC Progress</span>
+          <span id="hudProgress" class="hud-progress-val">0 / 10</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN CONTENT AREA -->
+  <main class="main-wrapper">
+
+    <!-- ==================== 1. START / REGISTRATION SCREEN ==================== -->
+    <section id="startScreen" class="start-wrapper animate-pop">
+      <div class="card">
+        <div class="pill-badge">
+          <span>Official Assessment</span>
+          <span>•</span>
+          <span>Two-Stage Evaluation</span>
+        </div>
+
+        <h2 class="page-heading">Quiz No. 3 - Web Systems and Technology</h2>
+        <p class="page-desc">
+          Enter your student details, choose <strong>3 categories</strong> for your Stage 1 board (10 items), and unlock the mandatory <strong class="pink-highlight">Code Hydra Coding Boss (15 points)</strong> in Stage 2.
+        </p>
+
+        <form id="startForm">
+          <div class="form-group-row">
+            <div>
+              <label for="inputFullName" class="form-label">
+                Full Name <span class="req-star">*</span>
+              </label>
+              <input
+                type="text"
+                id="inputFullName"
+                required
+                placeholder="e.g., Dela Cruz, Juan M."
+                class="text-input"
+              />
+            </div>
+
+            <div>
+              <label for="inputYearSection" class="form-label">
+                Year and Section <span class="req-star">*</span>
+              </label>
+              <input
+                type="text"
+                id="inputYearSection"
+                required
+                placeholder="e.g., BSIT 2-A"
+                class="text-input"
+              />
+            </div>
+          </div>
+
+          <!-- Category Selector (Pick 3 of 5 levels) -->
+          <div>
+            <div class="cat-header">
+              <label class="form-label" style="margin-bottom:0;">
+                Stage 1: Choose 3 Categories (<span id="selectedCatCount" class="text-indigo">3</span>/3 Selected)
+              </label>
+              <button type="button" id="randomizeCatsBtn" class="link-btn">
+                Shuffle 3 Categories
+              </button>
+            </div>
+
+            <div id="categoryPickerGrid" class="cat-picker-grid"></div>
+            <p id="catErrorMsg" class="error-msg hidden">
+              Please select exactly 3 categories to start the quiz.
+            </p>
+          </div>
+
+          <!-- Boss Notice -->
+          <div class="boss-notice">
+            <div class="boss-notice-title">
+              <span>🐉</span> Stage 2: Final Boss — Code Hydra (15 Points)
+            </div>
+            <p>Automatically unlocks after completing your 10 multiple-choice items. Evaluates DOM selection, comparison/logical operators, and conditional branching.</p>
+          </div>
+
+          <button type="submit" class="primary-btn">
+            Start Quiz No. 3 →
+          </button>
+        </form>
+      </div>
+    </section>
+
+    <!-- ==================== 2. STAGE 1: 3 CATEGORIES BOARD ==================== -->
+    <section id="boardScreen" class="hidden animate-pop">
+      <div class="board-banner">
+        <div>
+          <span class="stage-tag">Stage 1 of 2 • Multiple Choice</span>
+          <h2 class="board-title">Select Task Numbers (1–5)</h2>
+          <p class="board-sub">
+            Pick any available numbered task across your 3 categories. Answer <strong>10 items</strong> to advance to Code Hydra.
+          </p>
+          <span class="lock-rule-note">⚠ Rule: Once you open a task, you cannot exit or switch to another question until it is answered or time expires.</span>
+        </div>
+        <div class="remaining-box">
+          <span class="remaining-label">Remaining MC</span>
+          <span id="remainingCount" class="remaining-val">10 Items</span>
+        </div>
+      </div>
+
+      <div id="categoriesBoardGrid" class="board-grid"></div>
+    </section>
+
+    <!-- ==================== 3. STAGE 2: CODE HYDRA (15 PTS) ==================== -->
+    <section id="hydraScreen" class="hydra-wrapper hidden animate-pop">
+      <div class="hydra-hero">
+        <div class="hydra-hero-left">
+          <span class="hydra-dragon">🐉</span>
+          <div>
+            <span class="hydra-tag">Stage 2 of 2 • Mandatory Coding Challenge</span>
+            <h2 class="hydra-title">Final Boss: Code Hydra</h2>
+            <p class="hydra-sub">Build a Smart Room Thermostat controller using DOM manipulation, operators, and conditional statements.</p>
+          </div>
+        </div>
+        <div class="max-score-box">
+          <span class="max-score-label">Max Score</span>
+          <span class="max-score-val">15 Points</span>
+        </div>
+      </div>
+
+      <!-- Hydra Scenario Card -->
+      <div class="card hydra-body">
+        <div>
+          <span class="stage-tag" style="color:#c084fc;">Coding Scenario &amp; Requirements</span>
+          <h3 class="scenario-title">Task: Implement the <code class="inline-code">adjustAC()</code> Function</h3>
+          <p style="font-size:14px; color:#cbd5e1; margin-top:8px;">
+            Write a JavaScript function named <code class="inline-code">adjustAC</code> that reads the current room temperature (in °C) from an input element with <code class="inline-code">id="roomTemp"</code>, converts it to a number, evaluates it using comparison and logical operators, and displays the thermostat mode inside a paragraph element with <code class="inline-code">id="acMode"</code> based on these rules:
+          </p>
+          <ul class="rules-list">
+            <li>If temperature is <strong>below 20</strong> (<code class="inline-code">&lt; 20</code>) → Mode: <code class="text-cyan" style="font-weight:700;">"Heater On"</code></li>
+            <li>If temperature is <strong>between 20 and 26</strong> (inclusive, using <code class="inline-code">&amp;&amp;</code>) → Mode: <code class="text-emerald" style="font-weight:700;">"Eco Standby"</code></li>
+            <li>If temperature is <strong>above 26</strong> (<code class="inline-code">&gt; 26</code>) → Mode: <code class="text-rose" style="font-weight:700;">"Max Cooling"</code></li>
+          </ul>
+        </div>
+
+        <!-- HTML Template Reference -->
+        <div class="code-box">
+          <div class="code-box-title">Target HTML Context</div>
+          <pre>&lt;input type="number" id="roomTemp" placeholder="Enter °C" /&gt;
+&lt;button onclick="adjustAC()"&gt;Set Thermostat&lt;/button&gt;
+&lt;p id="acMode"&gt;&lt;/p&gt;</pre>
+        </div>
+
+        <!-- Code Editor Area -->
+        <div>
+          <label for="hydraCodeInput" class="form-label">
+            Your JavaScript Code Solution <span class="req-star">*</span>
+          </label>
+          <textarea
+            id="hydraCodeInput"
+            rows="9"
+            placeholder="function adjustAC() {&#10;  // Retrieve temperature, evaluate with operators &amp; if statements, and update #acMode&#10;}"
+            class="code-editor"
+          ></textarea>
+          <p id="hydraErrorMsg" class="error-msg hidden">
+            Please enter your solution code before submitting.
+          </p>
+        </div>
+
+        <button
+          type="button"
+          onclick="submitCodeHydra()"
+          class="primary-btn boss-submit-btn"
+        >
+          Submit Code Hydra &amp; View Final Score →
+        </button>
+      </div>
+    </section>
+
+    <!-- ==================== 4. FINAL SCORE & REVIEW SCREEN ==================== -->
+    <section id="resultScreen" class="result-wrapper hidden animate-pop">
+      <div class="card">
+        <div class="pill-badge">
+          Quiz No. 3 - Web Systems and Technology
+        </div>
+
+        <div class="result-header">
+          <div>
+            <h2 class="page-heading" style="font-size:28px; margin-bottom:0;">Official Assessment Summary</h2>
+            <div class="student-meta">
+              <p><span>Full Name:</span> <strong id="resFullName" style="color:#ffffff;">—</strong></p>
+              <p><span>Year and Section:</span> <strong id="resYearSection" class="text-indigo">—</strong></p>
+            </div>
+          </div>
+
+          <!-- Score Cards Grid -->
+          <div class="score-cards-grid">
+            <div class="score-mini-card mc">
+              <span class="score-mini-label">Stage 1 (MC)</span>
+              <span id="resMcScore" class="score-mini-val text-indigo">0/10</span>
+            </div>
+            <div class="score-mini-card hydra">
+              <span class="score-mini-label">Code Hydra</span>
+              <span id="resHydraScore" class="score-mini-val text-pink">0/15</span>
+            </div>
+            <div class="score-mini-card total">
+              <span class="score-mini-label">Total Grade</span>
+              <span id="resTotalScore" class="score-mini-val text-emerald">0/25</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Stage 2 Code Hydra Inspection Breakdown -->
+        <div style="margin-bottom:24px;">
+          <h3 class="section-heading text-pink">
+            🐉 Final Boss: Code Hydra — Automated Inspection Breakdown
+          </h3>
+          <div id="resHydraBreakdown"></div>
+        </div>
+
+        <!-- Stage 1 Multiple Choice Review -->
+        <div style="padding-top:20px; border-top:1px solid var(--border-subtle);">
+          <h3 class="section-heading text-indigo">Stage 1 — Multiple Choice Answers Review (10 Items)</h3>
+          <div id="resMcBreakdown"></div>
+        </div>
+
+        <div class="print-row">
+          <button type="button" onclick="window.print()" class="print-btn">
+            🖨️ Print / Save Report
+          </button>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ==================== MANDATORY QUESTION / TASK MODAL ==================== -->
+  <div id="questionModal" class="modal-backdrop hidden" role="dialog" aria-modal="true" aria-labelledby="modalQuestionText">
+    <div class="modal-dialog animate-pop">
+      <div class="modal-header">
+        <div class="modal-cat-info">
+          <span id="modalCatIcon" style="font-size:24px;">🧩</span>
+          <div>
+            <span id="modalCatName" class="stage-tag">Category</span>
+            <span style="color:#475569; margin:0 6px;">•</span>
+            <span id="modalTaskNum" style="font-size:12px; font-weight:700; color:#cbd5e1;">Task #1</span>
+          </div>
+        </div>
+        <div class="modal-timer-box">
+          <span style="font-size:10px; font-weight:700; text-transform:uppercase; color:var(--text-muted);">Time</span>
+          <span id="modalTimerText" class="modal-timer-val">30s</span>
+        </div>
+      </div>
+
+      <div class="modal-body">
+        <div class="lock-banner">
+          <span>🔒</span>
+          <span>Question Locked: You must answer this question before returning to the board. Switching tasks is disabled.</span>
+        </div>
+
+        <h3 id="modalQuestionText" class="modal-question"></h3>
+
+        <div id="modalCodeWrapper" class="modal-code-box hidden">
+          <div class="code-box-title">Code Snippet</div>
+          <pre id="modalCodeBlock"></pre>
+        </div>
+
+        <div id="modalChoicesGrid" class="choices-list"></div>
+      </div>
+
+      <div class="modal-footer">
+        <span>Item <strong id="modalItemCounter" style="color:#ffffff;">1</strong> of 10 (Running score hidden)</span>
+        <span>Mandatory response required</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    Quiz No. 3 - Web Systems and Technology • Interactive Two-Stage Assessment
+  </footer>
+
+  <!-- ==================== GAME DATA & LOGIC ==================== -->
+  <script>
+    function q(question, tag, choices, answer, code, explanation) {
+      return { question, tag, choices, answer, code, explanation };
+    }
+
+    const levels = [
+      {
+        id: 0,
+        name: "Syntax Station",
+        icon: "🧩",
+        color: "purple",
+        desc: "Variables, data types, and JavaScript syntax.",
+        difficulty: "Beginner",
+        time: 30,
+        questions: [
+          q("Which keyword declares a variable that can be reassigned?", "syntax", ["const", "let", "static", "define"], 1, "let points = 10; points = 15;", "The value of a let variable can be reassigned."),
+          q("What appears in the console?", "output", ["Hello world", "'Hello world' including quotes", "undefined", "A syntax error"], 0, "console.log(\"Hello world\");", "String quotes mark the text in code; they are not printed."),
+          q("Which value is a Boolean?", "syntax", ["\"true\"", "1", "true", "\"false\""], 2, "", "Boolean values are true or false without quotation marks."),
+          q("What is the problem with this declaration?", "debug", ["let userName = \"Kai\";", "let userName == \"Kai\";", "const userName = \"Kai\";", "var userName = \"Kai\";"], 1, "let userName == \"Kai\";", "A declaration uses = to assign a value; == compares values."),
+          q("Which value represents no assigned value yet?", "syntax", ["null", "undefined", "0", "false"], 1, "let result; console.log(result);", "A declared variable without an assigned value evaluates to undefined.")
+        ]
+      },
+      {
+        id: 1,
+        name: "Expression Arena",
+        icon: "⚡",
+        color: "gold",
+        desc: "Operators, comparisons, and expressions.",
+        difficulty: "Beginner+",
+        time: 35,
+        questions: [
+          q("What is the result of this expression?", "output", ["21", "11", "16", "13"], 1, "5 + 2 * 3", "Multiplication is evaluated before addition."),
+          q("What does this expression return?", "output", ["true", "false", "undefined", "SyntaxError"], 1, "10 > 5 && 3 < 1", "The first comparison is true, but the second is false. AND requires both to be true."),
+          q("Which operator checks value and type equality?", "syntax", ["=", "==", "===", "!="], 2, "", "Strict equality compares both value and type."),
+          q("What is the result?", "output", ["\"23\"", "5", "23", "NaN"], 0, "\"2\" + 3", "When a string is combined with + and a number, the number is converted to a string."),
+          q("Which operator means logical OR?", "syntax", ["&&", "||", "!", "%"], 1, "", "OR is true when at least one side is truthy.")
+        ]
+      },
+      {
+        id: 2,
+        name: "Logic Labyrinth",
+        icon: "🧠",
+        color: "pink",
+        desc: "Conditions, loops, and functions.",
+        difficulty: "Intermediate",
+        time: 40,
+        questions: [
+          q("A learner passes with a score of 75 or higher. Which condition is correct?", "scenario", ["score > 75", "score >= 75", "score < 75", "score == 74"], 1, "if (CONDITION) { result = \"Passed\"; }", "The rule includes a score exactly equal to 75."),
+          q("What will this code print?", "output", ["Pass", "Try again", "Nothing", "Syntax error"], 1, "let score = 70;\nif (score >= 75) {\n  console.log(\"Pass\");\n} else {\n  console.log(\"Try again\");\n}", "70 is below the threshold of 75, so the else block runs."),
+          q("How many times does the loop run?", "output", ["2", "3", "4", "5"], 1, "for (let i = 0; i < 3; i++) {\n  console.log(i);\n}", "The values are 0, 1, and 2. The loop stops when i becomes 3."),
+          q("Which keyword sends a value back from a function?", "syntax", ["break", "return", "continue", "yield"], 1, "function double(n) {\n  return n * 2;\n}", "return gives the function's result to the code that called it."),
+          q("What is printed?", "output", ["8", "9", "10", "11"], 0, "function add(a, b) {\n  return a + b;\n}\nconsole.log(add(3, 5));", "The function receives 3 and 5, then returns their sum.")
+        ]
+      },
+      {
+        id: 3,
+        name: "DOM Dungeon",
+        icon: "🕸️",
+        color: "cyan",
+        desc: "Select elements, update content, and handle events.",
+        difficulty: "Intermediate",
+        time: 45,
+        questions: [
+          q("Which method selects the first element matching a CSS selector?", "syntax", ["getElementById()", "querySelector()", "getElementsByTagName()", "createElement()"], 1, "document.querySelector(\".message\")", "querySelector accepts a CSS selector and returns the first match."),
+          q("Which property changes an element's text without parsing HTML?", "syntax", ["innerHTML", "textContent", "outerHTML", "styleText"], 1, "message.textContent = \"Welcome!\";", "textContent sets the text content of an element."),
+          q("A button should run code when clicked. Which method is a good choice?", "scenario", ["addEventListener(\"click\", handler)", "querySelector(\"click\")", "setAttribute(\"event\")", "console.log(\"click\")"], 0, "button.addEventListener(\"click\", handleClick);", "An event listener connects an event, such as click, to a handler function."),
+          q("What is missing if this code returns an error because the element is not found?", "debug", ["The element may not exist yet or the selector may be wrong", "The browser cannot use document", "querySelector only selects images", "JavaScript cannot update HTML"], 0, "const title = document.querySelector(\"#pageTitle\");\ntitle.textContent = \"Hello\";", "Check that an element with id=\"pageTitle\" exists and that the script runs after it is available."),
+          q("Which selector targets an element with id=\"status\"?", "syntax", ["\".status\"", "\"status\"", "\"#status\"", "\"*status\""], 2, "document.querySelector(\"#status\")", "In CSS selectors, # targets an ID and . targets a class.")
+        ]
+      },
+      {
+        id: 4,
+        name: "Bug Hunter",
+        icon: "🛠️",
+        color: "purple",
+        desc: "Trace code, find mistakes, and repair logic.",
+        difficulty: "Advanced",
+        time: 50,
+        questions: [
+          q("Why does this loop never stop under normal execution?", "debug", ["i starts at 0", "The condition i >= 0 remains true as i increases from 0", "console.log is inside the loop", "i is declared with let"], 1, "for (let i = 0; i >= 0; i++) {\n  console.log(i);\n}", "i increases and stays greater than or equal to zero, so the condition never becomes false."),
+          q("Which line correctly converts an input string to a number?", "debug", ["Number(\"42\")", "String(42)", "Boolean(\"42\")", "parseText(\"42\")"], 0, "const age = Number(ageInput.value);", "Number() converts a numeric string into a number."),
+          q("Why might this comparison fail when ageInput.value is \"18\"?", "scenario", ["The input value is usually a string", "18 is not a number in JavaScript", "The === operator only works on strings", "value cannot be read from inputs"], 0, "ageInput.value === 18", "The input's value is a string, so strict equality with the number 18 is false."),
+          q("Which condition correctly checks that a value is between 1 and 10 inclusive?", "logic", ["value >= 1 || value <= 10", "value > 1 && value < 10", "value >= 1 && value <= 10", "value === 1 && value === 10"], 2, "", "Both boundaries must be satisfied, so use AND with inclusive comparisons."),
+          q("What is the output?", "output", ["true", "false", "0", "undefined"], 0, "Boolean(\"hello\")", "A non-empty string is truthy.")
+        ]
+      }
+    ];
+
+    const colorClassMap = {
+      purple: { badge: "badge-purple", border: "border-purple", tile: "tile-purple" },
+      gold: { badge: "badge-gold", border: "border-gold", tile: "tile-gold" },
+      pink: { badge: "badge-pink", border: "border-pink", tile: "tile-pink" },
+      cyan: { badge: "badge-cyan", border: "border-cyan", tile: "tile-cyan" }
+    };
+
+    // STATE
+    const MAX_MC_ITEMS = 10;
+    const STORAGE_KEY = "quiz3_wst_lock_state_v2";
+    let studentInfo = { fullName: "", yearSection: "" };
+    let selectedLevelIds = [0, 1, 2];
+    let openedTiles = {};
+    let recordedMcAnswers = [];
+    let activeTask = null;
+    let timerInterval = null;
+    let timeRemaining = 30;
+    let isLocked = false;
+    let hydraResultData = null;
+
+    // Persist progress & active locked question to prevent switching via refresh
+    function saveQuizState() {
+      try {
+        const payload = {
+          studentInfo,
+          selectedLevelIds,
+          openedTiles,
+          recordedMcAnswers,
+          activeTask,
+          timeRemaining,
+          hydraResultData
+        };
+        sessionStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
+      } catch (e) {}
+    }
+
+    function restoreQuizState() {
+      try {
+        const raw = sessionStorage.getItem(STORAGE_KEY);
+        if (!raw) return false;
+        const saved = JSON.parse(raw);
+        if (!saved || !saved.studentInfo || !saved.studentInfo.fullName) return false;
+
+        studentInfo = saved.studentInfo;
+        selectedLevelIds = saved.selectedLevelIds || [0, 1, 2];
+        openedTiles = saved.openedTiles || {};
+        recordedMcAnswers = saved.recordedMcAnswers || [];
+        activeTask = saved.activeTask || null;
+        timeRemaining = typeof saved.timeRemaining === "number" ? saved.timeRemaining : 30;
+        hydraResultData = saved.hydraResultData || null;
+
+        document.getElementById("startScreen").classList.add("hidden");
+
+        if (hydraResultData) {
+          revealFinalResults(false);
+          return true;
+        }
+
+        if (recordedMcAnswers.length >= MAX_MC_ITEMS) {
+          document.getElementById("hydraScreen").classList.remove("hidden");
+          return true;
+        }
+
+        // Restore Stage 1 Board
+        document.getElementById("hudName").textContent = studentInfo.fullName;
+        document.getElementById("hudSection").textContent = studentInfo.yearSection;
+        updateHudProgress();
+        document.getElementById("hudContainer").classList.remove("hidden");
+        document.getElementById("boardScreen").classList.remove("hidden");
+        renderGameBoard();
+
+        // If a question was currently open when refreshed, immediately lock back into it
+        if (activeTask) {
+          openTaskModal(activeTask.levelId, activeTask.qIndex, timeRemaining);
+        }
+        return true;
+      } catch (e) {
+        return false;
+      }
+    }
+
+    // Prevent Escape key from closing the mandatory question modal
+    document.addEventListener("keydown", (e) => {
+      if (activeTask && e.key === "Escape") {
+        e.preventDefault();
+        e.stopPropagation();
+      }
+    });
+
+    // RENDER CATEGORY PICKER
+    function renderCategoryPicker() {
+      const grid = document.getElementById("categoryPickerGrid");
+      document.getElementById("selectedCatCount").textContent = selectedLevelIds.length;
+
+      grid.innerHTML = levels.map(lvl => {
+        const isSelected = selectedLevelIds.includes(lvl.id);
+        const style = colorClassMap[lvl.color] || colorClassMap.purple;
+        return `
+          <button
+            type="button"
+            onclick="toggleCategorySelection(${lvl.id})"
+            class="cat-card-btn ${isSelected ? "selected" : ""}"
+          >
+            <div class="cat-card-top">
+              <span class="cat-icon">${lvl.icon}</span>
+              <span class="diff-badge ${style.badge}">
+                ${lvl.difficulty}
+              </span>
+            </div>
+            <div>
+              <div class="cat-card-title-row">
+                <span>${lvl.name}</span>
+                <span class="check-circle">${isSelected ? "✓" : "+"}</span>
+              </div>
+              <p class="cat-card-desc">${lvl.desc}</p>
+            </div>
+          </button>
+        `;
+      }).join("");
+    }
+
+    function toggleCategorySelection(id) {
+      document.getElementById("catErrorMsg").classList.add("hidden");
+      if (selectedLevelIds.includes(id)) {
+        selectedLevelIds = selectedLevelIds.filter(item => item !== id);
+      } else {
+        if (selectedLevelIds.length >= 3) selectedLevelIds.shift();
+        selectedLevelIds.push(id);
+      }
+      renderCategoryPicker();
+    }
+
+    document.getElementById("randomizeCatsBtn").addEventListener("click", () => {
+      const ids = levels.map(l => l.id);
+      for (let i = ids.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [ids[i], ids[j]] = [ids[j], ids[i]];
+      }
+      selectedLevelIds = ids.slice(0, 3).sort((a, b) => a - b);
+      document.getElementById("catErrorMsg").classList.add("hidden");
+      renderCategoryPicker();
+    });
+
+    // START QUIZ SUBMISSION
+    document.getElementById("startForm").addEventListener("submit", (e) => {
+      e.preventDefault();
+      const fullName = document.getElementById("inputFullName").value.trim();
+      const yearSection = document.getElementById("inputYearSection").value.trim();
+
+      if (!fullName || !yearSection) return;
+      if (selectedLevelIds.length !== 3) {
+        document.getElementById("catErrorMsg").classList.remove("hidden");
+        return;
+      }
+
+      studentInfo = { fullName, yearSection };
+      openedTiles = {};
+      recordedMcAnswers = [];
+      activeTask = null;
+      hydraResultData = null;
+
+      document.getElementById("hudName").textContent = studentInfo.fullName;
+      document.getElementById("hudSection").textContent = studentInfo.yearSection;
+      updateHudProgress();
+      document.getElementById("hudContainer").classList.remove("hidden");
+
+      document.getElementById("startScreen").classList.add("hidden");
+      document.getElementById("resultScreen").classList.add("hidden");
+      document.getElementById("boardScreen").classList.remove("hidden");
+
+      renderGameBoard();
+      saveQuizState();
+    });
+
+    function updateHudProgress() {
+      const count = recordedMcAnswers.length;
+      document.getElementById("hudProgress").textContent = `${count} / ${MAX_MC_ITEMS}`;
+      document.getElementById("remainingCount").textContent = `${MAX_MC_ITEMS - count} Items`;
+    }
+
+    // RENDER GAME BOARD
+    function renderGameBoard() {
+      const boardGrid = document.getElementById("categoriesBoardGrid");
+      const activeLevels = selectedLevelIds.map(id => levels.find(l => l.id === id));
+      const hasActiveQuestion = Boolean(activeTask);
+
+      boardGrid.innerHTML = activeLevels.map(lvl => {
+        const style = colorClassMap[lvl.color] || colorClassMap.purple;
+        const tilesHtml = lvl.questions.map((questionItem, qIdx) => {
+          const tileKey = `${lvl.id}-${qIdx}`;
+          const isOpened = Boolean(openedTiles[tileKey]);
+          const isCurrentlyLockedTask = activeTask && activeTask.levelId === lvl.id && activeTask.qIndex === qIdx;
+          const isDisabled = isOpened || hasActiveQuestion;
+          const numberLabel = qIdx + 1;
+
+          let statusLabel = "Open";
+          let taskText = `Task #${numberLabel}`;
+          if (isOpened) {
+            statusLabel = "✓ Done";
+            taskText = "Recorded";
+          } else if (isCurrentlyLockedTask) {
+            statusLabel = "In Progress";
+            taskText = `Task #${numberLabel} (Locked)`;
+          }
+
+          return `
+            <button
+              type="button"
+              ${isDisabled ? "disabled" : ""}
+              onclick="openTaskModal(${lvl.id}, ${qIdx})"
+              class="tile-btn ${style.tile}"
+            >
+              <span class="tile-left">
+                <span class="tile-num">${numberLabel}</span>
+                <span class="tile-label">${taskText}</span>
+              </span>
+              <span class="tile-status">${statusLabel}</span>
+            </button>
+          `;
+        }).join("");
+
+        return `
+          <div class="cat-column ${style.border}">
+            <div class="col-header">
+              <div class="col-header-top">
+                <span class="col-icon">${lvl.icon}</span>
+                <span class="diff-badge ${style.badge}">
+                  ${lvl.difficulty} • ${lvl.time}s
+                </span>
+              </div>
+              <h3 class="col-title">${lvl.name}</h3>
+              <p class="col-desc">${lvl.desc}</p>
+            </div>
+            <div class="tiles-stack">${tilesHtml}</div>
+          </div>
+        `;
+      }).join("");
+    }
+
+    // MODAL (MANDATORY ONCE OPENED)
+    function openTaskModal(levelId, qIndex, customSeconds = null) {
+      if (recordedMcAnswers.length >= MAX_MC_ITEMS) return;
+      if (activeTask && (activeTask.levelId !== levelId || activeTask.qIndex !== qIndex) && customSeconds === null) {
+        return;
+      }
+
+      const tileKey = `${levelId}-${qIndex}`;
+      if (openedTiles[tileKey]) return;
+
+      const lvl = levels.find(l => l.id === levelId);
+      const item = lvl.questions[qIndex];
+
+      activeTask = { levelId, qIndex };
+      isLocked = false;
+
+      // Re-render board so all other tiles are disabled while modal is open
+      renderGameBoard();
+
+      document.getElementById("modalCatIcon").textContent = lvl.icon;
+      document.getElementById("modalCatName").textContent = lvl.name;
+      document.getElementById("modalTaskNum").textContent = `Number #${qIndex + 1}`;
+      document.getElementById("modalQuestionText").textContent = item.question;
+      document.getElementById("modalItemCounter").textContent = recordedMcAnswers.length + 1;
+
+      const codeWrapper = document.getElementById("modalCodeWrapper");
+      const codeBlock = document.getElementById("modalCodeBlock");
+      if (item.code && item.code.trim() !== "") {
+        codeBlock.textContent = item.code;
+        codeWrapper.classList.remove("hidden");
+      } else {
+        codeBlock.textContent = "";
+        codeWrapper.classList.add("hidden");
+      }
+
+      const letters = ["A", "B", "C", "D"];
+      const choicesGrid = document.getElementById("modalChoicesGrid");
+      choicesGrid.innerHTML = item.choices.map((choiceText, idx) => `
+        <button
+          type="button"
+          onclick="recordUserChoice(${idx})"
+          class="choice-btn"
+        >
+          <span class="choice-letter">${letters[idx]}</span>
+          <span style="word-break:break-word;">${escapeHtml(choiceText)}</span>
+        </button>
+      `).join("");
+
+      document.getElementById("questionModal").classList.remove("hidden");
+
+      const initialTime = customSeconds !== null ? customSeconds : lvl.time;
+      startTaskTimer(initialTime);
+      saveQuizState();
+    }
+
+    function startTaskTimer(seconds) {
+      clearInterval(timerInterval);
+      timeRemaining = seconds;
+      updateTimerDisplay();
+
+      timerInterval = setInterval(() => {
+        timeRemaining--;
+        updateTimerDisplay();
+        saveQuizState();
+        if (timeRemaining <= 0) {
+          clearInterval(timerInterval);
+          recordUserChoice(-1);
+        }
+      }, 1000);
+    }
+
+    function updateTimerDisplay() {
+      const timerEl = document.getElementById("modalTimerText");
+      timerEl.textContent = `${Math.max(0, timeRemaining)}s`;
+      if (timeRemaining <= 5) {
+        timerEl.classList.add("urgent");
+      } else {
+        timerEl.classList.remove("urgent");
+      }
+    }
+
+    function recordUserChoice(selectedIndex) {
+      if (isLocked || !activeTask) return;
+      isLocked = true;
+      clearInterval(timerInterval);
+
+      const { levelId, qIndex } = activeTask;
+      const lvl = levels.find(l => l.id === levelId);
+      const item = lvl.questions[qIndex];
+      const tileKey = `${levelId}-${qIndex}`;
+
+      openedTiles[tileKey] = true;
+      const isCorrect = selectedIndex === item.answer;
+
+      recordedMcAnswers.push({
+        itemNumber: recordedMcAnswers.length + 1,
+        categoryName: lvl.name,
+        categoryIcon: lvl.icon,
+        taskNumber: qIndex + 1,
+        question: item.question,
+        code: item.code,
+        choices: item.choices,
+        selectedIndex: selectedIndex,
+        correctIndex: item.answer,
+        isCorrect: isCorrect,
+        explanation: item.explanation
+      });
+
+      activeTask = null;
+      document.getElementById("questionModal").classList.add("hidden");
+
+      updateHudProgress();
+      saveQuizState();
+
+      if (recordedMcAnswers.length >= MAX_MC_ITEMS) {
+        document.getElementById("boardScreen").classList.add("hidden");
+        document.getElementById("hudContainer").classList.add("hidden");
+        document.getElementById("hydraScreen").classList.remove("hidden");
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      } else {
+        renderGameBoard();
+      }
+    }
+
+    // STAGE 2: AUTOMATED CODE HYDRA GRADER — SMART THERMOSTAT SCENARIO (15 PTS)
+    function submitCodeHydra() {
+      const userCode = document.getElementById("hydraCodeInput").value.trim();
+      const errEl = document.getElementById("hydraErrorMsg");
+
+      if (!userCode) {
+        errEl.classList.remove("hidden");
+        return;
+      }
+      errEl.classList.add("hidden");
+
+      let pts = 0;
+      let notes = [];
+
+      // 1. Function Declaration & Naming (3 pts)
+      if (/\bfunction\s+adjustAC\s*\(\s*\)/.test(userCode)) {
+        pts += 3;
+        notes.push("✓ Correct function declaration: function adjustAC() (+3)");
+      } else {
+        notes.push("✗ Missing or incorrect function declaration (expected function adjustAC()) [0/3]");
+      }
+
+      // 2. DOM Selection & Data Type Conversion (4 pts)
+      const hasGetTemp = /document\.(getElementById|querySelector)\s*\(\s*["']#?roomTemp["']\s*\)/.test(userCode);
+      const hasGetMode = /document\.(getElementById|querySelector)\s*\(\s*["']#?acMode["']\s*\)/.test(userCode);
+      const hasValAndText = /\.value/.test(userCode) && /\.(textContent|innerText|innerHTML)/.test(userCode);
+      if (hasGetTemp && hasGetMode && hasValAndText) {
+        pts += 4;
+        notes.push("✓ Accurate DOM selection and property manipulation for #roomTemp (.value) and #acMode (.textContent/.innerText) (+4)");
+      } else {
+        notes.push("✗ Incomplete DOM manipulation for #roomTemp or #acMode elements [0/4]");
+      }
+
+      // 3. Operators & Conditional Statements (5 pts)
+      const hasIf = /\bif\s*\(/.test(userCode);
+      const checks20 = /20/.test(userCode);
+      const checks26 = /26/.test(userCode);
+      const hasRelationalOrLogical = /(<|>|<=|>=|&&)/.test(userCode);
+      const setsHeater = /Heater On/i.test(userCode);
+      const setsEco = /Eco Standby/i.test(userCode);
+      const setsCooling = /Max Cooling/i.test(userCode);
+
+      if (hasIf && checks20 && checks26 && hasRelationalOrLogical && setsHeater && setsEco && setsCooling) {
+        pts += 5;
+        notes.push("✓ Correct conditional branching and operators for < 20 ('Heater On'), 20–26 ('Eco Standby'), and > 26 ('Max Cooling') (+5)");
+      } else {
+        notes.push("✗ Conditional logic or operators for < 20, 20–26, or > 26 ranges are missing or incomplete [0/5]");
+      }
+
+      // 4. Code Syntax & Structure (3 pts)
+      const hasBalanced = hasBalancedSyntax(userCode);
+      if (hasBalanced && /;/.test(userCode)) {
+        pts += 3;
+        notes.push("✓ Valid syntax, balanced parentheses/braces, and proper statement terminators (+3)");
+      } else {
+        notes.push("✗ Syntax errors detected (check parentheses, braces, or missing semicolons) [0/3]");
+      }
+
+      const finalHydraPts = Math.min(15, pts);
+      hydraResultData = {
+        userCode: userCode,
+        pts: finalHydraPts,
+        max: 15,
+        notes: notes,
+        referenceSolution: `function adjustAC() {\n  let temp = Number(document.getElementById("roomTemp").value);\n  let modeDisplay = document.getElementById("acMode");\n\n  if (temp < 20) {\n    modeDisplay.textContent = "Heater On";\n  } else if (temp >= 20 && temp <= 26) {\n    modeDisplay.textContent = "Eco Standby";\n  } else if (temp > 26) {\n    modeDisplay.textContent = "Max Cooling";\n  }\n}`
+      };
+
+      saveQuizState();
+      revealFinalResults(true);
+    }
+
+    function hasBalancedSyntax(str) {
+      const stack = [];
+      const pairs = { ")": "(", "]": "[", "}": "{" };
+      let inSingle = false, inDouble = false, inBacktick = false;
+
+      for (let i = 0; i < str.length; i++) {
+        const ch = str[i];
+        const prev = str[i - 1];
+        if (prev === "\\") continue;
+
+        if (ch === "'" && !inDouble && !inBacktick) inSingle = !inSingle;
+        else if (ch === '"' && !inSingle && !inBacktick) inDouble = !inDouble;
+        else if (ch === "`" && !inSingle && !inDouble) inBacktick = !inBacktick;
+
+        if (inSingle || inDouble || inBacktick) continue;
+
+        if (ch === "(" || ch === "[" || ch === "{") stack.push(ch);
+        else if (ch === ")" || ch === "]" || ch === "}") {
+          if (stack.pop() !== pairs[ch]) return false;
+        }
+      }
+      return !inSingle && !inDouble && !inBacktick && stack.length === 0;
+    }
+
+    // FINAL SCORE REVEAL SCREEN
+    function revealFinalResults(shouldScroll = true) {
+      document.getElementById("hydraScreen").classList.add("hidden");
+      document.getElementById("resultScreen").classList.remove("hidden");
+
+      const mcScore = recordedMcAnswers.filter(r => r.isCorrect).length;
+      const hydraScore = hydraResultData.pts;
+      const totalScore = mcScore + hydraScore;
+
+      document.getElementById("resFullName").textContent = studentInfo.fullName;
+      document.getElementById("resYearSection").textContent = studentInfo.yearSection;
+      document.getElementById("resMcScore").textContent = `${mcScore}/10`;
+      document.getElementById("resHydraScore").textContent = `${hydraScore}/15`;
+      document.getElementById("resTotalScore").textContent = `${totalScore}/25`;
+
+      const hydraDiv = document.getElementById("resHydraBreakdown");
+      const hData = hydraResultData;
+      const pillClass = hData.pts >= 12 ? "pass" : hData.pts >= 8 ? "warn" : "fail";
+
+      hydraDiv.innerHTML = `
+        <div class="review-card">
+          <div class="review-top">
+            <span style="font-weight:800; color:#ffffff; font-size:14px;">Code Hydra: adjustAC() Thermostat Controller Evaluation</span>
+            <span class="status-pill ${pillClass}">${hData.pts} / ${hData.max} pts</span>
+          </div>
+          <div style="margin-bottom:12px;">
+            <span class="ans-box-label">Your Submitted Code</span>
+            <div class="code-box" style="margin-top:4px;">
+              <pre>${escapeHtml(hData.userCode)}</pre>
+            </div>
+          </div>
+          <div style="margin-bottom:12px; font-size:12px; color:#cbd5e1;">
+            <span class="ans-box-label">Inspection Notes:</span>
+            ${hData.notes.map(n => `<div style="margin-top:3px;">${escapeHtml(n)}</div>`).join("")}
+          </div>
+          <div>
+            <span class="ans-box-label text-emerald">Reference Solution</span>
+            <div class="code-box" style="margin-top:4px; border-color:rgba(16, 185, 129, 0.25);">
+              <pre style="color:var(--emerald-light);">${escapeHtml(hData.referenceSolution)}</pre>
+            </div>
+          </div>
+        </div>
+      `;
+
+      const letters = ["A", "B", "C", "D"];
+      const mcDiv = document.getElementById("resMcBreakdown");
+      mcDiv.innerHTML = recordedMcAnswers.map(rec => {
+        const userChoiceLabel = rec.selectedIndex >= 0
+          ? `${letters[rec.selectedIndex]}. ${escapeHtml(rec.choices[rec.selectedIndex])}`
+          : "No answer (Time expired)";
+        const correctChoiceLabel = `${letters[rec.correctIndex]}. ${escapeHtml(rec.choices[rec.correctIndex])}`;
+
+        return `
+          <div class="review-card ${rec.isCorrect ? "correct" : "incorrect"}">
+            <div class="review-top">
+              <span style="font-size:12px; font-weight:700; color:var(--text-muted);">
+                Item #${rec.itemNumber} • ${rec.categoryIcon} ${rec.categoryName} (Task #${rec.taskNumber})
+              </span>
+              <span class="status-pill ${rec.isCorrect ? "pass" : "fail"}">
+                ${rec.isCorrect ? "✓ Correct (1 pt)" : "✗ Incorrect (0 pt)"}
+              </span>
+            </div>
+            <p style="font-size:14px; font-weight:700; color:#ffffff; margin-bottom:8px;">${escapeHtml(rec.question)}</p>
+            ${rec.code ? `<div class="modal-code-box" style="padding:10px 12px;"><pre style="font-size:12px;">${escapeHtml(rec.code)}</pre></div>` : ""}
+            <div class="review-answers-grid">
+              <div class="ans-box">
+                <span class="ans-box-label">Your Answer</span>
+                <span class="${rec.isCorrect ? "text-emerald" : "text-rose"}" style="font-weight:700;">${userChoiceLabel}</span>
+              </div>
+              <div class="ans-box">
+                <span class="ans-box-label">Correct Answer</span>
+                <span class="text-emerald" style="font-weight:700;">${correctChoiceLabel}</span>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join("");
+
+      if (shouldScroll) {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
+    }
+
+    function escapeHtml(str) {
+      return String(str)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#39;");
+    }
+
+    renderCategoryPicker();
+    restoreQuizState();
+  </script>
+</body>
+</html>
